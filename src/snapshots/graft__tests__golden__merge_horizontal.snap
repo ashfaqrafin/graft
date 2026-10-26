@@ -1,0 +1,47 @@
+---
+source: src/tests.rs
+expression: "golden(&tr, &info, true)"
+---
+── t = 0/4 ──
+
+                                                                                      HEAD   main
+                                                                  ●───●───●───────────◉
+                                                                          │
+                                                                          │       feature
+                                                                          ╰───●───●
+── t = 1/4 ──
+
+                                                                                  HEAD   main
+                                                              ●───●───●───────────◉
+                                                                      │
+                                                                      │       feature
+                                                                      ╰───●───●
+
+ ✔ merged feature into mai
+── t = 2/4 ──
+
+                                                                                  HEAD   main
+                                                              ●───●───●───────────◉───●
+                                                                      │               │
+                                                                      │       feature │
+                                                                      ╰───●───●───────╯
+
+ ✔ merged feature into main → bde29ee
+── t = 3/4 ──
+
+                                                                                      HEAD   main
+                                                              ●───●───●───────────●───◉
+                                                                      │               │
+                                                                      │       feature │
+                                                                      ╰───●───●───────╯
+
+ ✔ merged feature into main → bde29ee
+── t = 4/4 ──
+
+                                                                                      HEAD   main
+                                                              ●───●───●───────────●───◉
+                                                                      │               │
+                                                                      │       feature │
+                                                                      ╰───●───●───────╯
+
+ ✔ merged feature into main → bde29ee

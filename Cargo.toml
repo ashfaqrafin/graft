@@ -1,0 +1,70 @@
+[package]
+name = "graft-cli"
+version = "0.1.0"
+edition = "2024"
+description = "See what git does: animated commit graphs in your terminal"
+license = "MIT"
+readme = "README.md"
+authors = ["Ashfaq Khan Rafin <ashfaqrafin12345@gmail.com>"]
+repository = "https://github.com/ashfaqrafin/graft"
+homepage = "https://github.com/ashfaqrafin/graft"
+rust-version = "1.88"
+keywords = ["git", "cli", "terminal", "animation", "visualization"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "graft"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4.6", features = ["derive"] }
+clap_complete = "4"
+clap_mangen = "0.2"
+crossterm = "0.29"
+gix = { version = "0.90", default-features = false, features = ["sha1"] }
+libc = "0.2"
+notify = "8"
+smallvec = "1"
+unicode-width = "0.2"
+
+[dev-dependencies]
+insta = "1"
+proptest = { version = "1", default-features = false, features = ["std"] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+opt-level = 3
+strip = true
+
+# `cargo deb --no-build` (after building with target/completions + target/man generated; see Makefile)
+[package.metadata.deb]
+name = "graft"
+maintainer = "Ashfaq Khan Rafin <ashfaqrafin12345@gmail.com>"
+section = "vcs"
+depends = "git"
+extended-description = """Run any git command and watch the commit graph animate from before to after. \
+Previews what a command would do before you run it."""
+assets = [
+    ["target/release/graft", "usr/bin/", "755"],
+    ["target/completions/graft.bash", "usr/share/bash-completion/completions/graft", "644"],
+    ["target/completions/_graft", "usr/share/zsh/vendor-completions/", "644"],
+    ["target/completions/graft.fish", "usr/share/fish/vendor_completions.d/", "644"],
+    ["target/man/graft.1", "usr/share/man/man1/", "644"],
+    ["README.md", "usr/share/doc/graft/", "644"],
+]
+
+# `cargo generate-rpm`
+[package.metadata.generate-rpm]
+name = "graft"
+assets = [
+    { source = "target/release/graft", dest = "/usr/bin/graft", mode = "755" },
+    { source = "target/completions/graft.bash", dest = "/usr/share/bash-completion/completions/graft", mode = "644" },
+    { source = "target/completions/_graft", dest = "/usr/share/zsh/site-functions/_graft", mode = "644" },
+    { source = "target/completions/graft.fish", dest = "/usr/share/fish/vendor_completions.d/graft.fish", mode = "644" },
+    { source = "target/man/graft.1", dest = "/usr/share/man/man1/graft.1", mode = "644", doc = true },
+]
+[package.metadata.generate-rpm.requires]
+git = "*"

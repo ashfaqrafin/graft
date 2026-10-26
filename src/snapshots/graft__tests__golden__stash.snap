@@ -1,0 +1,52 @@
+---
+source: src/tests.rs
+expression: "golden(&tr, &info, false)"
+---
+── t = 0/4 ──
+
+  ◉  HEAD   main  3711f05 Add c                                      ╭─ working tree ─────────────╮
+  │                                                                  │ ~ a.txt                    │
+  ●               1d29d51 Add b                                      ╰────────────────────────────╯
+  │                                                                  ╭─ stash ────────────────────╮
+  ●               bbd05ee Initial commit                             │ (empty)                    │
+                                                                     ╰────────────────────────────╯
+── t = 1/4 ──
+
+  ◉  HEAD   main  3711f05 Add c                                      ╭─ working tree ─────────────╮
+  │                                                                  │ ●                          │
+  ●               1d29d51 Add b                                      ╰────────────────────────────╯
+  │                                                                  ╭─ stash ────────────────────╮
+  ●               bbd05ee Initial commit                             │ (empty)                    │
+                                                                     ╰────────────────────────────╯
+
+ ⇣ stashed 1 change ·
+── t = 2/4 ──
+
+  ◉  HEAD   main  3711f05 Add c                                      ╭─ working tree ─────────────╮
+  │                                                                  │ ✔ clean                    │
+  ●               1d29d51 Add b                                      ╰────────────────────────────╯
+  │                                                                  ╭─ stash ────────────────────╮
+  ●               bbd05ee Initial commit                             │ ≡ main: 3711f05 Add c      │
+                                                                     ╰────────────────────────────╯
+
+ ⇣ stashed 1 change · working tree clean
+── t = 3/4 ──
+
+  ◉  HEAD   main  3711f05 Add c                                      ╭─ working tree ─────────────╮
+  │                                                                  │ ✔ clean                    │
+  ●               1d29d51 Add b                                      ╰────────────────────────────╯
+  │                                                                  ╭─ stash ────────────────────╮
+  ●               bbd05ee Initial commit                             │ ≡ main: 3711f05 Add c      │
+                                                                     ╰────────────────────────────╯
+
+ ⇣ stashed 1 change · working tree clean
+── t = 4/4 ──
+
+  ◉  HEAD   main  3711f05 Add c                                      ╭─ working tree ─────────────╮
+  │                                                                  │ ✔ clean                    │
+  ●               1d29d51 Add b                                      ╰────────────────────────────╯
+  │                                                                  ╭─ stash ────────────────────╮
+  ●               bbd05ee Initial commit                             │ ≡ main: 3711f05 Add c      │
+                                                                     ╰────────────────────────────╯
+
+ ⇣ stashed 1 change · working tree clean

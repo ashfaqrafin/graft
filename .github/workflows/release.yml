@@ -1,0 +1,78 @@
+# Push a tag like v0.1.0 to build static Linux binaries, .deb and .rpm
+# packages, and publish them as a GitHub release.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - run: sudo apt-get update && sudo apt-get install -y musl-tools
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deb,cargo-generate-rpm
+
+      - name: Build
+        run: cargo build --release --locked --target ${{ matrix.target }}
+
+      - name: Completions and man page
+        run: |
+          BIN=target/${{ matrix.target }}/release/graft
+          mkdir -p target/completions target/man
+          "$BIN" completions bash > target/completions/graft.bash
+          "$BIN" completions zsh > target/completions/_graft
+          "$BIN" completions fish > target/completions/graft.fish
+          "$BIN" man > target/man/graft.1
+
+      - name: Archive
+        run: |
+          NAME=graft-${{ matrix.target }}
+          mkdir -p "dist/$NAME"
+          cp target/${{ matrix.target }}/release/graft README.md LICENSE "dist/$NAME/"
+          cp -r target/completions target/man "dist/$NAME/"
+          tar -czf "dist/$NAME.tar.gz" -C dist "$NAME"
+          (cd dist && sha256sum "$NAME.tar.gz" > "$NAME.tar.gz.sha256")
+          rm -rf "dist/$NAME"
+
+      - name: Debian and RPM packages
+        run: |
+          cargo deb --no-build --no-strip --target ${{ matrix.target }} --output dist/
+          cargo generate-rpm --target ${{ matrix.target }} --output dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.target }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          merge-multiple: true
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

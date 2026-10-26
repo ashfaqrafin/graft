@@ -1,0 +1,89 @@
+---
+source: src/tests.rs
+expression: "golden(&tr, &info, false)"
+---
+── t = 0/4 ──
+
+  ◉    HEAD   feature  f6ce353 Feature two
+  │
+  ●                    d7ab2de Feature one
+  │
+  │ ●  main            26d15a6 Main moves on
+  │ │
+  ●─╯                  3711f05 Add c
+  │
+  ●                    1d29d51 Add b
+  │
+  ●                    bbd05ee Initial commit
+── t = 1/4 ──
+
+  ○    HEAD   feature  f6ce353 Feature two
+  │
+  ○⡀                   d7ab2de Feature one
+  │●
+  │
+  │
+  │
+  │ ╷
+  │ ●  main            26d15a6 Main moves on
+  │ │
+  ●─╯                  3711f05 Add c
+  │
+  ●                    1d29d51 Add b
+  │
+  ●                    bbd05ee Initial commit
+
+ ✔ rebased feature onto main ·
+── t = 2/4 ──
+
+  ○    HEAD   feature  f6ce353 Feature two
+  │
+  ○                    d7ab2de Feature one
+  │
+  │ •                  062f87b Feature two
+  │⢤│⡆
+  │⡀●⠈⣍                2c9ac45 Feature one
+  │⠸│⠓
+  │ ●  main            26d15a6 Main moves on
+  │ │
+  ●─╯                  3711f05 Add c
+  │
+  ●                    1d29d51 Add b
+  │
+  ●                    bbd05ee Initial commit
+
+ ✔ rebased feature onto main · 2 commits replayed
+── t = 3/4 ──
+
+
+
+
+
+    ◉  HEAD   feature  062f87b Feature two
+    │
+    ●                  2c9ac45 Feature one
+    │
+    ●  main            26d15a6 Main moves on
+    │
+  ●─╯                  3711f05 Add c
+  │
+  ●                    1d29d51 Add b
+  │
+  ●                    bbd05ee Initial commit
+
+ ✔ rebased feature onto main · 2 commits replayed
+── t = 4/4 ──
+
+  ◉    HEAD   feature  062f87b Feature two
+  │
+  ●                    2c9ac45 Feature one
+  │
+  ●    main            26d15a6 Main moves on
+  │
+  ●                    3711f05 Add c
+  │
+  ●                    1d29d51 Add b
+  │
+  ●                    bbd05ee Initial commit
+
+ ✔ rebased feature onto main · 2 commits replayed

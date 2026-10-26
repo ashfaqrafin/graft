@@ -1,0 +1,85 @@
+---
+source: src/tests.rs
+expression: "golden(&tr, &info, false)"
+---
+── t = 0/4 ──
+
+  ◉    HEAD   main  26d15a6 Main moves on
+  │
+  │ ●  feature      f6ce353 Feature two
+  │ │
+  │ ●               d7ab2de Feature one
+  │ │
+  ●─╯               3711f05 Add c
+  │
+  ●                 1d29d51 Add b
+  │
+  ●                 bbd05ee Initial commit
+── t = 1/4 ──
+
+
+
+  ◉    HEAD   main  26d15a6 Main moves on
+  │
+  │ ●  feature      f6ce353 Feature two
+  │ │
+  │ ●               d7ab2de Feature one
+  │ │
+  ●─╯               3711f05 Add c
+  │
+  ●                 1d29d51 Add b
+  │
+  ●                 bbd05ee Initial commit
+
+ ✔ merged feature into mai
+── t = 2/4 ──
+
+  ●─╮               bde29ee Merge branch 'feature'
+  │ │
+  ◉ │  HEAD   main  26d15a6 Main moves on
+  │ │
+  │ ●  feature      f6ce353 Feature two
+  │ │
+  │ ●               d7ab2de Feature one
+  │ │
+  ●─╯               3711f05 Add c
+  │
+  ●                 1d29d51 Add b
+  │
+  ●                 bbd05ee Initial commit
+
+ ✔ merged feature into main → bde29ee
+── t = 3/4 ──
+
+  ◉─╮  HEAD   main  bde29ee Merge branch 'feature'
+  │ │
+  ● │               26d15a6 Main moves on
+  │ │
+  │ ●  feature      f6ce353 Feature two
+  │ │
+  │ ●               d7ab2de Feature one
+  │ │
+  ●─╯               3711f05 Add c
+  │
+  ●                 1d29d51 Add b
+  │
+  ●                 bbd05ee Initial commit
+
+ ✔ merged feature into main → bde29ee
+── t = 4/4 ──
+
+  ◉─╮  HEAD   main  bde29ee Merge branch 'feature'
+  │ │
+  ● │               26d15a6 Main moves on
+  │ │
+  │ ●  feature      f6ce353 Feature two
+  │ │
+  │ ●               d7ab2de Feature one
+  │ │
+  ●─╯               3711f05 Add c
+  │
+  ●                 1d29d51 Add b
+  │
+  ●                 bbd05ee Initial commit
+
+ ✔ merged feature into main → bde29ee

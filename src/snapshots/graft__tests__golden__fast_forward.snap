@@ -1,0 +1,57 @@
+---
+source: src/tests.rs
+expression: "golden(&tr, &info, false)"
+---
+── t = 0/4 ──
+
+  ●  feature                79dd709 Feature
+  │
+  ◉  HEAD   main            3711f05 Add c
+  │
+  ●                         1d29d51 Add b
+  │
+  ●                         bbd05ee Initial commit
+── t = 1/4 ──
+
+  ●   feature               79dd709 Feature
+  │
+  ◉  HEAD   main            3711f05 Add c
+  │
+  ●                         1d29d51 Add b
+  │
+  ●                         bbd05ee Initial commit
+
+ ✔ fast-forwar
+── t = 2/4 ──
+
+  ◉  HEAD   main   feature  79dd709 Feature
+  │
+  ●                         3711f05 Add c
+  │
+  ●                         1d29d51 Add b
+  │
+  ●                         bbd05ee Initial commit
+
+ ✔ fast-forward main → 79dd709
+── t = 3/4 ──
+
+  ◉  HEAD   main   feature  79dd709 Feature
+  │
+  ●                         3711f05 Add c
+  │
+  ●                         1d29d51 Add b
+  │
+  ●                         bbd05ee Initial commit
+
+ ✔ fast-forward main → 79dd709 (+1 commit)
+── t = 4/4 ──
+
+  ◉  HEAD   main   feature  79dd709 Feature
+  │
+  ●                         3711f05 Add c
+  │
+  ●                         1d29d51 Add b
+  │
+  ●                         bbd05ee Initial commit
+
+ ✔ fast-forward main → 79dd709 (+1 commit)
