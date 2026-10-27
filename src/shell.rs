@@ -19,10 +19,10 @@ const END: &str = "# <<< graft <<<";
 
 pub fn init(shell: Shell) -> String {
     match shell {
-        Shell::Bash => r#"# graft shell integration (bash): eval "$(graft init bash)"
+        Shell::Bash => r#"# graft shell integration (bash): eval "$(git-graft init bash)"
 git() {
-  if [ -t 1 ] && command -v graft >/dev/null 2>&1; then
-    command graft --as-git "$@"
+  if [ -t 1 ] && command -v git-graft >/dev/null 2>&1; then
+    command git-graft --as-git "$@"
   else
     command git "$@"
   fi
@@ -34,15 +34,15 @@ __graft_preview() {
     *) return ;;
   esac
   printf '\n'
-  command graft preview --line "$READLINE_LINE" </dev/tty
+  command git-graft preview --line "$READLINE_LINE" </dev/tty
 }
 [[ $- == *i* ]] && bind -x '"\ev": __graft_preview' 2>/dev/null
 "#
         .to_string(),
-        Shell::Zsh => r#"# graft shell integration (zsh): eval "$(graft init zsh)"
+        Shell::Zsh => r#"# graft shell integration (zsh): eval "$(git-graft init zsh)"
 git() {
-  if [[ -t 1 ]] && (( $+commands[graft] )); then
-    command graft --as-git "$@"
+  if [[ -t 1 ]] && (( $+commands[git-graft] )); then
+    command git-graft --as-git "$@"
   else
     command git "$@"
   fi
@@ -52,7 +52,7 @@ __graft_preview() {
   [[ $BUFFER == git || $BUFFER == git\ * ]] || return 0
   zle -I
   print
-  command graft preview --line "$BUFFER" </dev/tty
+  command git-graft preview --line "$BUFFER" </dev/tty
 }
 if [[ -o interactive ]]; then
   zle -N __graft_preview
@@ -60,10 +60,10 @@ if [[ -o interactive ]]; then
 fi
 "#
         .to_string(),
-        Shell::Fish => r#"# graft shell integration (fish): graft init fish | source
+        Shell::Fish => r#"# graft shell integration (fish): git-graft init fish | source
 function git --wraps git
-    if isatty stdout; and command -q graft
-        command graft --as-git $argv
+    if isatty stdout; and command -q git-graft
+        command git-graft --as-git $argv
     else
         command git $argv
     end
@@ -73,7 +73,7 @@ function __graft_preview
     set -l line (commandline)
     string match -qr '^git(\s|$)' -- $line; or return
     echo
-    command graft preview --line "$line" </dev/tty
+    command git-graft preview --line "$line" </dev/tty
     commandline -f repaint
 end
 if status is-interactive
@@ -106,7 +106,7 @@ fn rc_file(shell: Shell) -> Result<PathBuf> {
     })
 }
 
-/// The block `graft setup` adds. `path_dir` is added to PATH when graft would
+/// The block `git graft setup` adds. `path_dir` is added to PATH when graft would
 /// not otherwise be found.
 fn snippet(shell: Shell, path_dir: Option<&str>) -> String {
     let mut s = format!("{BEGIN}\n");
@@ -117,9 +117,9 @@ fn snippet(shell: Shell, path_dir: Option<&str>) -> String {
         };
     }
     s += match shell {
-        Shell::Bash => "command -v graft >/dev/null 2>&1 && eval \"$(graft init bash)\"\n",
-        Shell::Zsh => "(( $+commands[graft] )) && eval \"$(graft init zsh)\"\n",
-        Shell::Fish => "command -q graft; and graft init fish | source\n",
+        Shell::Bash => "command -v git-graft >/dev/null 2>&1 && eval \"$(git-graft init bash)\"\n",
+        Shell::Zsh => "(( $+commands[git-graft] )) && eval \"$(git-graft init zsh)\"\n",
+        Shell::Fish => "command -q git-graft; and git-graft init fish | source\n",
     };
     s + END + "\n"
 }
@@ -141,7 +141,7 @@ fn missing_path_dir() -> Option<String> {
     Some(shown)
 }
 
-/// `graft setup`: add (or with `undo`, remove) the integration in the shell's startup file.
+/// `git graft setup`: add (or with `undo`, remove) the integration in the shell's startup file.
 pub fn setup(shell: Option<Shell>, yes: bool, undo: bool) -> Result<i32> {
     let shell = shell.or_else(detect).context("could not tell which shell you use; pass --shell bash|zsh|fish")?;
     let path = rc_file(shell)?;
@@ -178,14 +178,14 @@ pub fn setup(shell: Option<Shell>, yes: bool, undo: bool) -> Result<i32> {
     }
     if !yes {
         if !std::io::stdin().is_terminal() {
-            bail!("run `graft setup --yes` to change {} without asking", path.display());
+            bail!("run `git graft setup --yes` to change {} without asking", path.display());
         }
         print!("Make plain `git` commands animate by adding a few lines to {}? [Y/n] ", path.display());
         std::io::stdout().flush()?;
         let mut answer = String::new();
         std::io::stdin().read_line(&mut answer)?;
         if matches!(answer.trim(), "n" | "N" | "no") {
-            println!("left {} alone; you can run `graft setup` any time", path.display());
+            println!("left {} alone; you can run `git graft setup` any time", path.display());
             return Ok(0);
         }
     }
@@ -206,7 +206,7 @@ pub fn setup(shell: Option<Shell>, yes: bool, undo: bool) -> Result<i32> {
     println!("open a new terminal (or `source {}`), then:", path.display());
     println!("  git merge <branch>    animates as usual git");
     println!("  {key:<20}  while typing a git command: preview what it would do");
-    println!("  graft live            type git commands with a live preview");
+    println!("  git graft live        type git commands with a live preview");
     Ok(0)
 }
 

@@ -86,7 +86,7 @@ impl Transition {
         Transition { graph, before, after, changes, phantom }
     }
 
-    /// A transition with no change: used for `graft log` and the idle watch view.
+    /// A transition with no change: used for `git graft log` and the idle watch view.
     pub fn still(repo: &Repo, snap: Snapshot, hints: &Hints) -> Transition {
         Transition::build(repo, snap.clone(), snap, hints)
     }

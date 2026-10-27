@@ -1,5 +1,5 @@
 # Maintainer: Ashfaq Khan Rafin <ashfaqrafin12345@gmail.com>
-pkgname=graft-git
+pkgname=git-graft-git
 pkgver=0.1.0
 pkgrel=1
 pkgdesc='See what git does: animated commit graphs in your terminal (latest from git)'
@@ -9,8 +9,8 @@ license=('MIT')
 depends=('git' 'gcc-libs' 'glibc')
 makedepends=('cargo')
 options=('!debug')
-provides=('graft')
-conflicts=('graft')
+provides=('git-graft')
+conflicts=('git-graft')
 source=("$pkgname::git+$url.git")
 sha256sums=('SKIP')
 
@@ -31,19 +31,19 @@ build() {
   export RUSTUP_TOOLCHAIN=stable
   export CARGO_TARGET_DIR=target
   cargo build --frozen --release
-  local bin=target/release/graft
-  "$bin" completions bash > graft.bash
-  "$bin" completions zsh > _graft
-  "$bin" completions fish > graft.fish
-  "$bin" man > graft.1
+  local bin=target/release/git-graft
+  "$bin" completions bash > git-graft.bash
+  "$bin" completions zsh > _git-graft
+  "$bin" completions fish > git-graft.fish
+  "$bin" man > git-graft.1
 }
 
 package() {
   cd "$pkgname"
-  install -Dm755 target/release/graft "$pkgdir/usr/bin/graft"
-  install -Dm644 graft.bash "$pkgdir/usr/share/bash-completion/completions/graft"
-  install -Dm644 _graft "$pkgdir/usr/share/zsh/site-functions/_graft"
-  install -Dm644 graft.fish "$pkgdir/usr/share/fish/vendor_completions.d/graft.fish"
-  install -Dm644 graft.1 "$pkgdir/usr/share/man/man1/graft.1"
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/graft/LICENSE"
+  install -Dm755 target/release/git-graft "$pkgdir/usr/bin/git-graft"
+  install -Dm644 git-graft.bash "$pkgdir/usr/share/bash-completion/completions/git-graft"
+  install -Dm644 _git-graft "$pkgdir/usr/share/zsh/site-functions/_git-graft"
+  install -Dm644 git-graft.fish "$pkgdir/usr/share/fish/vendor_completions.d/git-graft.fish"
+  install -Dm644 git-graft.1 "$pkgdir/usr/share/man/man1/git-graft.1"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

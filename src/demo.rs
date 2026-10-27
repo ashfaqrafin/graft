@@ -1,4 +1,4 @@
-//! `graft demo`: build a throwaway repository (plus a bare "remote" and a second
+//! `git graft demo`: build a throwaway repository (plus a bare "remote" and a second
 //! clone to play a teammate) and play every scene.
 
 use std::path::{Path, PathBuf};
@@ -171,7 +171,7 @@ pub fn run(settings: &Settings, filter: Option<&str>, list: bool) -> Result<i32>
         return Ok(0);
     }
     if !term::is_interactive() {
-        bail!("graft demo needs an interactive terminal");
+        bail!("git graft demo needs an interactive terminal");
     }
     let root = std::env::temp_dir().join(format!("graft-demo-{}", std::process::id()));
     let d = Demo { work: root.join("work"), mate: root.join("teammate"), root };
@@ -216,7 +216,7 @@ pub fn run(settings: &Settings, filter: Option<&str>, list: bool) -> Result<i32>
         }
     }
     if played == 0 {
-        println!("no scene matches; try graft demo --list");
+        println!("no scene matches; try git graft demo --list");
     }
     Ok(0)
 }

@@ -91,7 +91,7 @@ impl Settings {
 pub enum RunMode {
     /// Commands graft does not animate replace the graft process (the normal case).
     Exec,
-    /// Always run git as a child (`graft live` must survive the command).
+    /// Always run git as a child (`git graft live` must survive the command).
     Spawn,
     /// Child process with git's output hidden (the demo).
     Quiet,
@@ -126,7 +126,7 @@ fn passthrough(args: &[OsString], mode: RunMode) -> i32 {
     {
         use std::os::unix::process::CommandExt;
         let err = std::process::Command::new("git").args(args).env("GRAFT_ACTIVE", "1").exec();
-        eprintln!("graft: failed to run git: {err}");
+        eprintln!("git-graft: failed to run git: {err}");
         127
     }
     #[cfg(not(unix))]
@@ -142,7 +142,8 @@ pub fn git(mut all: Vec<OsString>, settings: &Settings, mode: RunMode) -> i32 {
     all.retain(|a| a != "--preview");
     let cmd = gitargs::parse(all);
     let Some(sub) = cmd.sub() else { return passthrough(&cmd.all, mode) };
-    let quick = Op::from_subcommand(&sub).is_none() && gitargs::is_builtin(&sub);
+    // `git graft …` itself, and git's own read-only commands: no alias lookup needed.
+    let quick = sub == "graft" || (Op::from_subcommand(&sub).is_none() && gitargs::is_builtin(&sub));
     if quick && !preview_flag {
         return passthrough(&cmd.all, mode); // e.g. status, log, diff: no alias lookup needed
     }
@@ -153,7 +154,7 @@ pub fn git(mut all: Vec<OsString>, settings: &Settings, mode: RunMode) -> i32 {
         return match preview(&cmd.dir, &words, settings, true) {
             Ok(code) => code,
             Err(e) => {
-                eprintln!("graft: {e:#}");
+                eprintln!("git-graft: {e:#}");
                 128
             }
         };
@@ -176,7 +177,7 @@ pub fn git(mut all: Vec<OsString>, settings: &Settings, mode: RunMode) -> i32 {
     if let Err(e) = animate(&repo, before, after, &info, settings)
         && std::env::var_os("GRAFT_DEBUG").is_some()
     {
-        eprintln!("graft: {e:#}");
+        eprintln!("git-graft: {e:#}");
     }
     code
 }
@@ -195,7 +196,7 @@ pub fn preview(dir: &Path, words: &[String], settings: &Settings, network: bool)
     Ok(0)
 }
 
-/// `graft preview --line "<what you typed>"`, used by the shell key binding.
+/// `git graft preview --line "<what you typed>"`, used by the shell key binding.
 pub fn preview_line(line: &str, settings: &Settings) -> Result<i32> {
     let mut words = gitargs::split_words(line);
     if words.first().is_some_and(|w| w == "git" || w == "graft") {
@@ -280,7 +281,7 @@ pub fn show(tr: &Transition, info: &OpInfo, settings: &Settings) -> io::Result<O
     Ok(outcome)
 }
 
-/// `graft log`: print the graph as a still frame.
+/// `git graft log`: print the graph as a still frame.
 pub fn log(settings: &Settings, all: bool, context: usize) -> Result<i32> {
     let repo = Repo::discover(".").context("not a git repository")?;
     let snap = Snapshot::take(&repo, false);

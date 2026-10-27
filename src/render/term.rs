@@ -1,7 +1,7 @@
 //! Raw mode, the inline viewport, synchronized output and cleanup.
 //!
 //! Wrap mode draws into a fixed block of rows below the prompt so scrollback is
-//! kept and the final graph stays on screen. `graft watch` uses the alternate screen.
+//! kept and the final graph stays on screen. `git graft watch` uses the alternate screen.
 
 use std::io::{self, IsTerminal, Write};
 use std::sync::atomic::{AtomicBool, Ordering};

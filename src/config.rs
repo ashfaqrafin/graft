@@ -71,7 +71,7 @@ pub fn load() -> Config {
     match parse(&text) {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("graft: ignoring {}: {e}", path.display());
+            eprintln!("git-graft: ignoring {}: {e}", path.display());
             Config::default()
         }
     }

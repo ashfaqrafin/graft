@@ -441,6 +441,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "git-graft"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "clap_complete",
+ "clap_mangen",
+ "crossterm",
+ "gix",
+ "insta",
+ "libc",
+ "notify",
+ "proptest",
+ "smallvec",
+ "unicode-width",
+]
+
+[[package]]
 name = "gix"
 version = "0.90.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1076,24 +1094,6 @@ checksum = "7c5b29808570149d86f417184605111ede9dda5aa06015e9ea6da07f0c3ca41e"
 dependencies = [
  "gix-error",
  "zlib-rs",
-]
-
-[[package]]
-name = "graft-cli"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "clap_complete",
- "clap_mangen",
- "crossterm",
- "gix",
- "insta",
- "libc",
- "notify",
- "proptest",
- "smallvec",
- "unicode-width",
 ]
 
 [[package]]

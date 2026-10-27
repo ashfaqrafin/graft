@@ -25,12 +25,18 @@ use clap::{CommandFactory, Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
-    name = "graft",
+    name = "git-graft",
     version,
     about = "See what git does: animated commit graphs in your terminal",
-    long_about = "Run any git command through graft and watch the commit graph animate from \
-                  before to after.\n\nExamples:\n  graft merge feature\n  graft merge feature --dry-run\n  \
-                  graft rebase main\n  graft watch\n\ngv flags go before the git subcommand: graft --speed 2 merge feature",
+    long_about = "Animates the commit graph whenever git changes it, and shows what a git \
+                  command would do before you run it.\n\n\
+                  Set up once with `git graft setup`; after that plain `git merge`, `git rebase`, \
+                  `git push` and friends animate.\n\n\
+                  Examples:\n  \
+                  git graft live                type git commands with a live preview\n  \
+                  git rebase main --preview     see what a command would do\n  \
+                  git graft demo                every animation in a throwaway repo\n  \
+                  git graft watch               live view of the current repository",
     allow_external_subcommands = true
 )]
 struct Cli {
@@ -77,7 +83,7 @@ enum Cmd {
         #[arg(long)]
         undo: bool,
     },
-    /// Print the shell integration code (used by `graft setup`)
+    /// Print the shell integration code (used by `git graft setup`)
     Init {
         #[arg(value_enum)]
         shell: shell::Shell,
@@ -88,11 +94,11 @@ enum Cmd {
         /// The command line as typed, e.g. "git rebase main" (for key bindings)
         #[arg(long)]
         line: Option<String>,
-        /// The git command, e.g. `graft preview rebase main`
+        /// The git command, e.g. `git graft preview rebase main`
         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
         args: Vec<String>,
     },
-    /// Install or remove the reference-transaction hook used by `graft watch`
+    /// Install or remove the reference-transaction hook used by `git graft watch`
     Hooks {
         #[command(subcommand)]
         action: HookAction,
@@ -186,7 +192,7 @@ fn main() {
         Some(Cmd::Config { init }) => config_cmd(init),
         Some(Cmd::Man) => clap_mangen::Man::new(Cli::command()).render(&mut std::io::stdout()).map(|_| 0).map_err(Into::into),
         Some(Cmd::Completions { shell }) => {
-            clap_complete::generate(shell, &mut Cli::command(), "graft", &mut std::io::stdout());
+            clap_complete::generate(shell, &mut Cli::command(), "git-graft", &mut std::io::stdout());
             Ok(0)
         }
         None => {
@@ -197,7 +203,7 @@ fn main() {
     let code = match result {
         Ok(code) => code,
         Err(e) => {
-            eprintln!("graft: {e:#}");
+            eprintln!("git-graft: {e:#}");
             1
         }
     };
@@ -218,7 +224,7 @@ fn config_cmd(init: bool) -> anyhow::Result<i32> {
         }
         return Ok(0);
     }
-    let state = if path.exists() { "" } else { "  (not created yet; graft config --init)" };
+    let state = if path.exists() { "" } else { "  (not created yet; git graft config --init)" };
     println!("{}{state}", path.display());
     println!("themes: auto, {}", render::color::preset_names().collect::<Vec<_>>().join(", "));
     Ok(0)

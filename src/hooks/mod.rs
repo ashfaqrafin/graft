@@ -1,6 +1,6 @@
 //! The `reference-transaction` hook (git 2.28+) fires on every ref update from any
 //! client, IDEs and GUIs included. Ours appends the updates to `$GIT_COMMON_DIR/graft/events`,
-//! which `graft watch` listens to.
+//! which `git graft watch` listens to.
 
 use std::path::PathBuf;
 
@@ -23,7 +23,7 @@ fn script() -> String {
     format!(
         r#"#!/bin/sh
 {MARKER}
-# Records committed ref updates for `graft watch`. Safe to delete.
+# Records committed ref updates for `git graft watch`. Safe to delete.
 [ "$1" = committed ] || exit 0
 dir="$(git rev-parse --git-common-dir)/graft"
 mkdir -p "$dir" || exit 0

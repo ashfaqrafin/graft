@@ -1,4 +1,4 @@
-//! `graft live`: type git commands with the predicted result animating
+//! `git graft live`: type git commands with the predicted result animating
 //! underneath as you type. Enter runs the command for real.
 
 use std::ffi::OsString;
@@ -265,7 +265,7 @@ fn ref_names(cwd: &std::path::Path) -> Vec<String> {
 
 pub fn run(settings: &Settings) -> Result<i32> {
     if !term::is_interactive() {
-        bail!("graft live needs an interactive terminal");
+        bail!("git graft live needs an interactive terminal");
     }
     let cwd = std::env::current_dir()?;
     Repo::discover(&cwd).context("not a git repository")?;

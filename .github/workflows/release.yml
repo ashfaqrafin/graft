@@ -36,18 +36,18 @@ jobs:
 
       - name: Completions and man page
         run: |
-          BIN=target/${{ matrix.target }}/release/graft
+          BIN=target/${{ matrix.target }}/release/git-graft
           mkdir -p target/completions target/man
-          "$BIN" completions bash > target/completions/graft.bash
-          "$BIN" completions zsh > target/completions/_graft
-          "$BIN" completions fish > target/completions/graft.fish
-          "$BIN" man > target/man/graft.1
+          "$BIN" completions bash > target/completions/git-graft.bash
+          "$BIN" completions zsh > target/completions/_git-graft
+          "$BIN" completions fish > target/completions/git-graft.fish
+          "$BIN" man > target/man/git-graft.1
 
       - name: Archive
         run: |
-          NAME=graft-${{ matrix.target }}
+          NAME=git-graft-${{ matrix.target }}
           mkdir -p "dist/$NAME"
-          cp target/${{ matrix.target }}/release/graft README.md LICENSE "dist/$NAME/"
+          cp target/${{ matrix.target }}/release/git-graft README.md LICENSE "dist/$NAME/"
           cp -r target/completions target/man "dist/$NAME/"
           tar -czf "dist/$NAME.tar.gz" -C dist "$NAME"
           (cd dist && sha256sum "$NAME.tar.gz" > "$NAME.tar.gz.sha256")

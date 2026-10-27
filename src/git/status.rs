@@ -32,7 +32,7 @@ pub struct WorktreeStatus {
 impl WorktreeStatus {
     pub fn read(workdir: &Path) -> Option<WorktreeStatus> {
         // --no-optional-locks keeps status from rewriting the index, which would
-        // otherwise wake up `graft watch` in an endless loop.
+        // otherwise wake up `git graft watch` in an endless loop.
         let (code, out) = runner::output(
             Some(workdir),
             &["--no-optional-locks", "status", "--porcelain=v2", "-z", "--untracked-files=normal"],

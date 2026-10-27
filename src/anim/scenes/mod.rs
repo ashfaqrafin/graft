@@ -2,7 +2,7 @@
 //!
 //! Every scene starts from the exact before picture (the compact before layout),
 //! morphs to the union layout to make room, plays the operation, then morphs to
-//! the compact after layout so the final frame looks like `graft log` would.
+//! the compact after layout so the final frame looks like `git graft log` would.
 
 pub mod caption;
 mod merge;
@@ -65,7 +65,7 @@ pub fn build(tr: &Transition, info: &OpInfo, theme: &Theme, vp: Viewport) -> (Sc
     s.finish()
 }
 
-/// A still frame of the current state (used by `graft log` and idle `graft watch`).
+/// A still frame of the current state (used by `git graft log` and idle `git graft watch`).
 pub fn still(tr: &Transition, theme: &Theme, vp: Viewport, caption: bool) -> (Scene, Timeline) {
     let info = OpInfo::new(Op::Other, Vec::new());
     let mut s = Stage::new(tr, &info, theme, vp);
@@ -136,7 +136,7 @@ impl<'a> Stage<'a> {
         let vis1: Vec<bool> = (0..n).map(|i| vis0[i] || vis2[i]).collect();
 
         // The before picture is ordered around the old HEAD and the after picture
-        // around the new one, so the first and last frames match `graft log`.
+        // around the new one, so the first and last frames match `git graft log`.
         let node_of = |snap: &Snapshot| snap.head_oid().and_then(|o| g.find(&o));
         let priority = |first: &Snapshot, second: &Snapshot| -> Vec<NodeId> {
             tr.phantom.into_iter().chain(node_of(first)).chain(node_of(second)).collect()

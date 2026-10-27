@@ -1,4 +1,4 @@
-//! `graft watch`: a full-screen live view. Whenever refs, the index or the stash
+//! `git graft watch`: a full-screen live view. Whenever refs, the index or the stash
 //! change (from any tool), the graph animates from the old state to the new one.
 
 use std::path::Path;
@@ -35,7 +35,7 @@ fn relevant(path: &Path) -> bool {
 pub fn run(settings: &Settings) -> Result<i32> {
     let repo = Repo::discover(".").context("not a git repository")?;
     if !term::is_interactive() {
-        bail!("graft watch needs an interactive terminal");
+        bail!("git graft watch needs an interactive terminal");
     }
     let (tx, rx) = mpsc::channel::<()>();
     let mut watcher = notify::recommended_watcher(move |res: notify::Result<notify::Event>| {
@@ -49,7 +49,7 @@ pub fn run(settings: &Settings) -> Result<i32> {
         watcher.watch(&repo.git_dir, RecursiveMode::Recursive)?;
     }
     let cwd = std::env::current_dir()?;
-    let title = format!(" graft watch · {} · q to quit ", repo.display_name());
+    let title = format!(" git graft watch · {} · q to quit ", repo.display_name());
 
     term::install_panic_hook();
     term::enter_raw()?;

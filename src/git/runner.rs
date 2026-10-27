@@ -16,7 +16,7 @@ where
     let mut child = match Command::new("git").args(args).env("GRAFT_ACTIVE", "1").spawn() {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("graft: failed to run git: {e}");
+            eprintln!("git-graft: failed to run git: {e}");
             return 127;
         }
     };

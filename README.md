@@ -27,10 +27,10 @@ any key skips the animation.
 **Any Linux (x86_64 or arm64):**
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/ashfaqrafin/graft/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/ashfaqrafin/graft/HEAD/install.sh | sh
 ```
 
-The installer needs no root. It puts a static binary in `~/.local/bin`
+The installer needs no root. It puts a static `git-graft` binary in `~/.local/bin`
 (`/usr/local/bin` when run as root) and verifies its checksum. It also
 installs shell completions and the man page, then asks whether plain `git`
 commands should animate. Set `GRAFT_VERSION=v0.1.0` to pin a version, or
@@ -39,27 +39,31 @@ commands should animate. Set `GRAFT_VERSION=v0.1.0` to pin a version, or
 **Arch Linux (AUR):**
 
 ```sh
-yay -S graft        # or graft-git for the latest commit
+yay -S git-graft        # or git-graft-git for the latest commit
 ```
 
 **Debian/Ubuntu and Fedora/openSUSE:** download the `.deb` or `.rpm` from
 the [releases page](https://github.com/ashfaqrafin/graft/releases), then run
-`sudo apt install ./graft_*.deb` or `sudo dnf install ./graft-*.rpm`.
+`sudo apt install ./git-graft_*.deb` or `sudo dnf install ./git-graft-*.rpm`.
 
 **From source:**
 
 ```sh
-cargo install --locked --git https://github.com/ashfaqrafin/graft graft-cli
+cargo install --locked --git https://github.com/ashfaqrafin/graft git-graft
 # or, in a clone:
 make && sudo make install          # PREFIX=~/.local for a user install
 ```
 
-Then try `graft demo`, which plays every animation in a throwaway repository.
+Then try `git graft demo`, which plays every animation in a throwaway repository.
+
+The program is called `git-graft`, so git runs it as `git graft …`. Arch's
+official repos already have an unrelated package named `graft`, so don't
+install that one.
 
 ## Use it like git
 
 ```sh
-graft setup          # one time; asks before editing ~/.bashrc, ~/.zshrc or fish config
+git graft setup          # one time; asks before editing ~/.bashrc, ~/.zshrc or fish config
 ```
 
 After that, plain git commands animate:
@@ -79,7 +83,7 @@ graft:
   and exit codes all work as before.
 - **Off when output isn't a terminal:** scripts and pipes get plain git.
 
-To remove the integration, run `graft setup --undo`.
+To remove the integration, run `git graft setup --undo`.
 
 ## See it before you run it
 
@@ -89,7 +93,7 @@ repository.
 | How | What you do |
 | --- | --- |
 | **While typing** | Type a git command at your prompt, press **Alt+V** (Alt+G in fish). The predicted result animates below and your command line comes back untouched |
-| **Live mode** | `graft live`. Type git commands and watch the predicted tree update as you type. Enter runs the command for real. Tab completes branch names |
+| **Live mode** | `git graft live`. Type git commands and watch the predicted tree update as you type. Enter runs the command for real. Tab completes branch names |
 | **Flag** | `git rebase main --preview`, or `git merge feature --dry-run` |
 
 Previews use git's own machinery wherever it exists:
@@ -109,12 +113,12 @@ Previews use git's own machinery wherever it exists:
 
 | Command | What it does |
 | --- | --- |
-| `graft watch` | Full-screen live view that animates whenever refs change, from any tool (IDE, GUI, another terminal) |
-| `graft log [--all] [-n N]` | Print the graph around HEAD |
-| `graft demo [scene]` | Play every scene in a throwaway repository (`--list` shows them) |
-| `graft config --init` | Write a commented config file |
-| `graft hooks install` | Add a `reference-transaction` hook that logs ref updates for `graft watch` |
-| `graft <git command>` | Run one git command through graft without the shell integration |
+| `git graft watch` | Full-screen live view that animates whenever refs change, from any tool (IDE, GUI, another terminal) |
+| `git graft log [--all] [-n N]` | Print the graph around HEAD |
+| `git graft demo [scene]` | Play every scene in a throwaway repository (`--list` shows them) |
+| `git graft config --init` | Write a commented config file |
+| `git graft hooks install` | Add a `reference-transaction` hook that logs ref updates for `git graft watch` |
+| `git-graft <git command>` | Run one git command through graft without the shell integration |
 
 ### What each operation looks like
 
@@ -132,9 +136,9 @@ Previews use git's own machinery wherever it exists:
 
 ### Watching other tools
 
-`graft watch` notices ref changes made by anything: your IDE, a GUI, another
-terminal. `graft hooks install` adds a `reference-transaction` hook (git 2.28+)
-that also logs every ref update to `.git/graft/events`. `graft hooks uninstall`
+`git graft watch` notices ref changes made by anything: your IDE, a GUI, another
+terminal. `git graft hooks install` adds a `reference-transaction` hook (git 2.28+)
+that also logs every ref update to `.git/graft/events`. `git graft hooks uninstall`
 removes it. The installer never overwrites a hook it didn't create.
 
 ### Options
@@ -155,7 +159,7 @@ than 40 columns, graft prints a one-line summary instead.
 
 ### Config file
 
-`graft config --init` writes a commented template to `~/.config/graft/config.toml`
+`git graft config --init` writes a commented template to `~/.config/graft/config.toml`
 (or `$XDG_CONFIG_HOME/graft/config.toml`). Flags beat environment variables,
 which beat the file. A broken file is reported once and ignored, so a typo
 never stops git from running.
@@ -192,7 +196,7 @@ snapshot BEFORE → run real git → snapshot AFTER → diff → animate BEFORE 
   with their originals by summary.
 - **Layout** runs three times: the compact before graph, the union of both,
   and the compact after graph. The animation morphs between them, so the
-  first and last frames match `graft log`. Lane assignment knows nothing about
+  first and last frames match `git graft log`. Lane assignment knows nothing about
   the screen. An `Orientation` (vertical or horizontal) turns (lane, row) into
   cells, and edges are routed in the same transposed coordinates.
 - **Animation** is a base state plus tweens. `sample(t)` is pure, which makes
@@ -201,7 +205,7 @@ snapshot BEFORE → run real git → snapshot AFTER → diff → animate BEFORE 
   wrapped in synchronized output. Edges are per-cell direction masks, so
   junctions pick the right box glyph on their own. Edges are revealed half a
   cell at a time, and particles leave braille trails. Wrap mode draws in an
-  inline viewport, and `graft watch` uses the alternate screen.
+  inline viewport, and `git graft watch` uses the alternate screen.
 
 ```
 src/
@@ -212,7 +216,7 @@ src/
   render/   buffer, color, draw, term
   hooks/    reference-transaction installer
   gitargs   git's global options and aliases     preview   predictions
-  shell     shell integration, setup             live      `graft live`
+  shell     shell integration, setup             live      `git graft live`
 ```
 
 ## Performance
@@ -222,7 +226,7 @@ Measured on git/git (82k commits) with a release build:
 | Metric | Target | Measured |
 | --- | --- | --- |
 | `graft --version` | — | 1.6 ms |
-| `graft log` (process start → output) | < 20 ms | ~12 ms |
+| `git graft log` (process start → output) | < 20 ms | ~12 ms |
 | Sample + draw one frame | < 2 ms | ~13 µs |
 | Typical animation | 0.6–1.5 s | 0.6–1.6 s (a conflict runs ~2 s) |
 
@@ -266,5 +270,5 @@ your earlier output is never overwritten.
 2. The `release` workflow builds static x86_64 and arm64 binaries, `.deb`
    and `.rpm` packages and checksums, and publishes them as a GitHub release,
    which `install.sh` downloads from.
-3. AUR: in `packaging/aur/graft`, bump `pkgver`, run `updpkgsums`, then
-   `makepkg --printsrcinfo > .SRCINFO` and push to `aur.archlinux.org/graft.git`.
+3. AUR: in `packaging/aur/git-graft`, bump `pkgver`, run `updpkgsums`, then
+   `makepkg --printsrcinfo > .SRCINFO` and push to `aur.archlinux.org/git-graft.git`.
