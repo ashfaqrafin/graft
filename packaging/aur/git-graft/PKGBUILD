@@ -13,7 +13,7 @@ depends=('git' 'gcc-libs' 'glibc')
 makedepends=('cargo')
 options=('!debug')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('b393e6ce6443f79c09d90bd2cd8576146082c705862b19e51a0f97a2acec47f9')
 
 prepare() {
   cd "graft-$pkgver"

@@ -1,0 +1,17 @@
+pkgbase = git-graft
+	pkgdesc = See what git does: animated commit graphs in your terminal
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/ashfaqrafin/graft
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	makedepends = cargo
+	depends = git
+	depends = gcc-libs
+	depends = glibc
+	options = !debug
+	source = git-graft-0.1.0.tar.gz::https://github.com/ashfaqrafin/graft/archive/refs/tags/v0.1.0.tar.gz
+	sha256sums = b393e6ce6443f79c09d90bd2cd8576146082c705862b19e51a0f97a2acec47f9
+
+pkgname = git-graft
